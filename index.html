@@ -12,47 +12,115 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input id="pinbtn"class="form-control" type="text">
+                    <button id="gnrtbtn" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input id="newpin" class="form-control" type="text">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
-                              <div class="button">7</div>
-                              <div class="button">8</div>
-                              <div class="button">9</div>
+                              <div class="button" onclick="enterPin('7')">7</div>
+                              <div class="button" onclick="enterPin('8')">8</div>
+                              <div class="button"onclick="enterPin('9')">9</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">4</div>
-                              <div class="button">5</div>
-                              <div class="button">6</div>
+                              <div class="button"onclick="enterPin('4')">4</div>
+                              <div class="button"onclick="enterPin('5')">5</div>
+                              <div class="button"onclick="enterPin('6')">6</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">1</div>
-                              <div class="button">2</div>
-                              <div class="button">3</div>
+                              <div class="button"onclick="enterPin('1')">1</div>
+                              <div class="button"onclick="enterPin('2')">2</div>
+                              <div class="button"onclick="enterPin('3')">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div class="button"><</div>
-                                <div class="button">0</div>
-                                <div class="button">C</div>
+                                <div class="button"onclick="removeLast()"><</div>
+                                <div class="button"onclick="enterPin('0')">0</div>
+                                <div class="button"onclick="clearAll()">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button id="sub-btn" type="submit" class="submit-btn">Submit</button>
+                                <p id="trypara"class="action-left"><span id="try">3 try left</span></p>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            <p id="notshow"class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="show"class="notify">✅ Pin Matched... Secret door is opening for you</p>
         </div>
     </div>
+    <script>
+    //for generate button
+        const gnrt=document.getElementById("gnrtbtn");
+        gnrt.addEventListener("click",function(){
+            const pinnum=Math.round(1000+Math.random()*9000);
+            document.getElementById("pinbtn").value=pinnum;
+            generatestyle();
+        })
+
+    //for entering pin
+       function enterPin(num){
+           document.getElementById("newpin").value=document.getElementById("newpin").value+num;
+        }
+
+    //for submit button
+        const sub=document.getElementById("sub-btn");
+        let subclick=3;
+        sub.addEventListener("click",function(){
+        const generated=document.getElementById("pinbtn").value;
+        const pin=parseFloat(document.getElementById("newpin").value);
+        clearAll();
+       if(generated==pin){
+           match();
+           document.getElementById("try").innerHTML="";
+       }
+       else{
+           notMatch();
+           subclick=subclick-1;
+           document.getElementById("try").innerHTML=(subclick)+" try left";  
+       }
+       if(subclick<=0){
+        document.getElementById("try").innerHTML="Try Later After Generating Again";
+       }
+        })
+
+    //clear all
+      function clearAll(){
+    document.getElementById("newpin").value="";
+ }
+
+ //if number matches
+        function match(){
+    document.getElementById("show").style.display="block";
+    document.getElementById("notshow").style.display="none"; 
+}
+
+//if number doesnt match
+ function notMatch(){
+    document.getElementById("show").style.display="none";
+    document.getElementById("notshow").style.display="block"; 
+}
+
+//by clicking generate button
+function generatestyle(){
+    clearAll();
+    subclick=3;
+     document.getElementById("notshow").style.display="none";
+     document.getElementById("show").style.display="none";
+     document.getElementById("try").innerHTML=(subclick)+" try left";
+}
+
+//delete last number entered
+ function removeLast(){
+ num=document.getElementById("newpin").value;
+ document.getElementById("newpin").value=num.slice(0,-1);
+ }
+
+    </script>
 </body>
 </html>
